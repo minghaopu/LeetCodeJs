@@ -357,6 +357,26 @@
 				result = tmp.concat();
 			}
 			return result;
+		},
+		/*
+		 *		152. Maximum Product Subarray
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number}
+		 */
+		maxProduct: function(nums) {
+			var n = nums.length;
+			if (n === 0) return 0;
+			var res = Number.Minimum;
+			for (var i = 0, frontproduct = 1, backproduct = 1; i < n; i++) {
+				frontproduct *= nums[i];
+				backproduct *= nums[n - i - 1];
+				res = Math.max(res, Math.max(frontproduct, backproduct));
+				if (frontproduct === 0) frontproduct = 1;
+				if (backproduct === 0) backproduct = 1;
+			}
+			return res;
 		}
 	})
 
