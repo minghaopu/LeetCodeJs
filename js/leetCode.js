@@ -377,6 +377,24 @@
 				if (backproduct === 0) backproduct = 1;
 			}
 			return res;
+		},
+		/*
+		 *		152. Maximum Product Subarray
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {string}
+		 */
+		largestNumber: function(nums) {
+			var res = "";
+			nums.sort(this.compareString_152);
+			for (var i = 0; i < nums.length; i++) {
+				res += nums[i];
+			}
+			return res[0] === "0" ? "0" : res;
+		},
+		compareString_152: function(a, b) {
+			return ("" + b + a) - ("" + a + b);
 		}
 	})
 
