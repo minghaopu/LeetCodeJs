@@ -38,6 +38,10 @@
 		this.next = null;
 	}
 
+	String.prototype.replaceAt = function(index, char) {
+		return this.substring(0, index) + char + this.substring(index + 1);
+	}
+
 
 	/*
 	 *		LeetCOde Answer
@@ -387,14 +391,78 @@
 		 */
 		largestNumber: function(nums) {
 			var res = "";
-			nums.sort(this.compareString_152);
+			nums.sort(function() {
+				return ("" + b + a) - ("" + a + b);
+			});
 			for (var i = 0; i < nums.length; i++) {
 				res += nums[i];
 			}
 			return res[0] === "0" ? "0" : res;
 		},
-		compareString_152: function(a, b) {
-			return ("" + b + a) - ("" + a + b);
+		/*
+		 *		29. Divide Two Integers 
+		 */
+		/**
+		 * @param {number} dividend
+		 * @param {number} divisor
+		 * @return {number}
+		 */
+		divide: function(dividend, divisor) {
+			const MAX_VALUE = 2147483647;
+			const MIN_VALUE = -2147483648;
+			if (divisor === 0 || (dividend === MIN_VALUE && divisor === -1)) return MAX_VALUE;
+			var res = 0;
+			var sign = (dividend < 0) ^ (divisor < 0);
+			dividend = Math.abs(dividend);
+			divisor = Math.abs(divisor);
+			while (dividend >= divisor) {
+				var multiple = 1,
+					temp = divisor;
+				while ((temp < MAX_VALUE / 2) && dividend >= (temp << 1)) {
+					multiple <<= 1;
+					temp <<= 1;
+				}
+				dividend -= temp;
+				res += multiple;
+			}
+			return sign === 0 ? res : -res;
+		},
+		/*
+		 *		127. Word Ladder
+		 */
+		/**
+		 * @param {string} beginWord
+		 * @param {string} endWord
+		 * @param {Set} wordList
+		 *   Note: wordList is a Set object, see:
+		 *   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+		 * @return {number}
+		 */
+		 // BFS
+		ladderLength: function(beginWord, endWord, wordList) {
+			var queue = [beginWord];
+			var charTable = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+			wordList.delete(beginWord);
+			var dist = 2;
+			while (queue.length > 0) {
+				var l = queue.length;
+				for (var i = 0; i < l; i++) {
+					beginWord = queue.shift();
+					for (j = 0; j < beginWord.length; j++) {
+						var tmp = beginWord;
+						for (k = 0; k < 26; k++) {
+							tmp = tmp.replaceAt(j, charTable[k]);
+							if (tmp === endWord) return dist;
+							if (tmp !== beginWord && wordList.has(tmp)) {
+								queue.push(tmp);
+								wordList.delete(tmp);
+							}
+						}
+					}
+				}
+				dist++;
+			}
+			return 0;
 		}
 	})
 
