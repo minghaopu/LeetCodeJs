@@ -41,7 +41,12 @@
 	String.prototype.replaceAt = function(index, char) {
 		return this.substring(0, index) + char + this.substring(index + 1);
 	}
-
+	Array.prototype.swap = function(x, y) {
+		var b = this[x];
+		this[x] = this[y];
+		this[y] = b;
+		return this;
+	}
 
 	/*
 	 *		LeetCOde Answer
@@ -501,7 +506,31 @@
 				}
 			}
 			return false;
+		},
+		/*
+		 *		46. Permutations
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number[][]}
+		 */
+		dfs: function(result, nums, start, length) {
+			if (start === length) {
+				result.push(nums.slice());
+				return;
+			}
+			for (var i = start; i < length; i++) {
+				nums.swap(start, i);
+				this.dfs(result, nums, start + 1, length);
+				nums.swap(start, i);
+			}
+		},
+		permute: function(nums) {
+			var result = [];
+			this.dfs(result, nums, 0, nums.length);
+			return result;
 		}
+
 
 	})
 
