@@ -438,7 +438,7 @@
 		 *   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
 		 * @return {number}
 		 */
-		 // BFS
+		// BFS
 		ladderLength: function(beginWord, endWord, wordList) {
 			var queue = [beginWord];
 			var charTable = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -463,7 +463,46 @@
 				dist++;
 			}
 			return 0;
+		},
+		/*
+		 *		79. Word Search
+		 */
+		/**
+		 * @param {character[][]} board
+		 * @param {string} word
+		 * @return {boolean}
+		 */
+		isFound: function(board, word, start, x, y, m, n) {
+			if (start === word.length) {
+				return true;
+			}
+			if (x < 0 || y < 0 || x >= m || y >= n) {
+				return false;
+			}
+			var t = board[x][y];
+			if (t !== word[start] || t === "*") {
+				return false;
+			}
+			board[x][y] = "*";
+			var res = false;
+			if (!res) res = this.isFound(board, word, start + 1, x - 1, y, m, n);
+			if (!res) res = this.isFound(board, word, start + 1, x, y - 1, m, n);
+			if (!res) res = this.isFound(board, word, start + 1, x + 1, y, m, n);
+			if (!res) res = this.isFound(board, word, start + 1, x, y + 1, m, n);
+			board[x][y] = t;
+			return res;
+		},
+		exist: function(board, word) {
+			var m = board.length;
+			var n = board[0].length;
+			for (var i = 0; i < m; i++) {
+				for (var j = 0; j < n; j++) {
+					if (this.isFound(board, word, 0, i, j, m, n)) return true;
+				}
+			}
+			return false;
 		}
+
 	})
 
 	window.l = window.lCode = lCode;
