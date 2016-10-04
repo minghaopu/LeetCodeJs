@@ -563,39 +563,51 @@
 			return res;
 		},
 		/*
-		 *		54. Spiral Matrix
+		 *		22. Parenthesis
 		 */
 		/**
 		 * @param {number} n
 		 * @return {string[]}
 		 */
 
-		check: function(str) {
-			for (var i = 0, stack = []; i < str.length; i++) {
-				if (str[i] === ")" && stack.length !== 0 && stack[stack.length - 1]) stack.pop();
-				else stack.push(str[i]);
-			}
-			return stack.length === 0;
-		},
-		dfs: function(res, string, start, length) {
-			if (start === length && this.check(string) && res.indexOf(string) === -1) {
-				res.push(string);
+		// check: function(str) {
+		// 	for (var i = 0, stack = []; i < str.length; i++) {
+		// 		if (str[i] === ")" && stack.length !== 0 && stack[stack.length - 1]) stack.pop();
+		// 		else stack.push(str[i]);
+		// 	}
+		// 	return stack.length === 0;
+		// },
+		// dfs: function(res, string, start, length) {
+		// 	if (start === length && this.check(string) && res.indexOf(string) === -1) {
+		// 		res.push(string);
+		// 	} else {
+		// 		for (var i = start; i < length; i++) {
+		// 			var c = string.swap(start, i);
+		// 			this.dfs(res, c, start + 1, length);
+		// 		}
+		// 	}
+		// },
+		// generateParenthesis: function(n) {
+		// 	var res = [];
+		// 	for (var i = 0, string = ""; i < n; i++) {
+		// 		string += "()";
+		// 	}
+		// 	this.dfs(res, string, 1, 2 * n)
+		// 	return res;
+		// }
+		dfs: function(res, str, left, right) {
+			if (left === 0 && right === 0) {
+				res.push(str);
 			} else {
-				for (var i = start; i < length; i++) {
-					var c = string.swap(start, i);
-					this.dfs(res, c, start + 1, length);
-				}
+				if (left > 0) this.dfs(res, str + "(", left - 1, right + 1);
+				if (right > 0) this.dfs(res, str + ")", left, right - 1);
 			}
 		},
 		generateParenthesis: function(n) {
 			var res = [];
-			for (var i = 0, string = ""; i < n; i++) {
-				string += "()";
-			}
-			this.dfs(res, string, 1, 2 * n)
+			this.dfs(res, "", n, 0)
 			return res;
 		}
-
 
 
 	})
