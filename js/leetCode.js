@@ -47,6 +47,11 @@
 		this[y] = b;
 		return this;
 	}
+	String.prototype.swap = function(x, y) {
+		var t = this[x];
+		var c = this.substring(0, x) + this[y] + this.substring(x + 1);
+		return c.substring(0, y) + t + this.substring(y + 1);
+	};
 
 	/*
 	 *		LeetCOde Answer
@@ -529,7 +534,68 @@
 			var result = [];
 			this.dfs(result, nums, 0, nums.length);
 			return result;
+		},
+		/*
+		 *		54. Spiral Matrix
+		 */
+		/**
+		 * @param {number[][]} matrix
+		 * @return {number[]}
+		 */
+		spiralOrder: function(matrix) {
+			if (matrix.length === 0) return [];
+			var r_start = 0,
+				r_end = matrix.length - 1,
+				c_start = 0,
+				c_end = matrix[0].length - 1,
+				i = 0;
+			var res = [];
+			while (true) {
+				for (var col = c_start; col <= c_end; col++) res[i++] = matrix[r_start][col];
+				if (++r_start > r_end) break;
+				for (var row = r_start; row <= r_end; row++) res[i++] = matrix[row][c_end];
+				if (--c_end < c_start) break;
+				for (col = c_end; col >= c_start; col--) res[i++] = matrix[r_end][col];
+				if (--r_end < r_start) break;
+				for (row = r_end; row >= r_start; row--) res[i++] = matrix[row][c_start];
+				if (++c_start > c_end) break;
+			}
+			return res;
+		},
+		/*
+		 *		54. Spiral Matrix
+		 */
+		/**
+		 * @param {number} n
+		 * @return {string[]}
+		 */
+
+		check: function(str) {
+			for (var i = 0, stack = []; i < str.length; i++) {
+				if (str[i] === ")" && stack.length !== 0 && stack[stack.length - 1]) stack.pop();
+				else stack.push(str[i]);
+			}
+			return stack.length === 0;
+		},
+		dfs: function(res, string, start, length) {
+			if (start === length && this.check(string) && res.indexOf(string) === -1) {
+				res.push(string);
+			} else {
+				for (var i = start; i < length; i++) {
+					var c = string.swap(start, i);
+					this.dfs(res, c, start + 1, length);
+				}
+			}
+		},
+		generateParenthesis: function(n) {
+			var res = [];
+			for (var i = 0, string = ""; i < n; i++) {
+				string += "()";
+			}
+			this.dfs(res, string, 1, 2 * n)
+			return res;
 		}
+
 
 
 	})
