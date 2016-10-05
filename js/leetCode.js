@@ -52,6 +52,10 @@
 		var c = this.substring(0, x) + this[y] + this.substring(x + 1);
 		return c.substring(0, y) + t + this.substring(y + 1);
 	};
+	Array.prototype.replaceAt = function(index, value) {
+		this[index] = value;
+		return this;
+	}
 
 	/*
 	 *		LeetCOde Answer
@@ -607,6 +611,138 @@
 			var res = [];
 			this.dfs(res, "", n, 0)
 			return res;
+		},
+		/*
+		 *		142. Linked List Cycle II  
+		 */
+		/**
+		 * Definition for singly-linked list.
+		 * function ListNode(val) {
+		 *     this.val = val;
+		 *     this.next = null;
+		 * }
+		 */
+
+		/**
+		 * @param {ListNode} head
+		 * @return {ListNode}
+		 */
+		detectCycle: function(head) {
+			var slow = head;
+			var fast = head;
+			var entry = head;
+			while (fast !== null && fast.next !== null) {
+				slow = slow.next;
+				fast = fast.next.next;
+				if (slow === fast) {
+					while (entry != slow) {
+						entry = entry.next;
+						slow = slow.next;
+					}
+					return entry;
+				}
+			}
+			return null;
+		},
+		/*
+		 *		200. Number of Islands
+		 */
+		/**
+		 * @param {character[][]} grid
+		 * @return {number}
+		 */
+		numIslands: function(grid) {
+			if (grid.length === 0) return 0;
+			var res = 0;
+			var m = grid.length;
+			var n = grid[0].length;
+			for (var i = 0; i < m; i++) {
+				for (var j = 0; j < n; j++) {
+					if (grid[i][j] !== "1") continue;
+					else {
+						res++;
+						this.expand(grid, i, j, m, n);
+					}
+				}
+			}
+			return res;
+		},
+		expand: function(grid, x, y, m, n) {
+			grid[x] = grid[x].replaceAt(x, "*");
+			if (x < m - 1 && grid[x + 1][y] === "1") this.expand(grid, x + 1, y, m, n);
+			if (y < n - 1 && grid[x][y + 1] === "1") this.expand(grid, x, y + 1, m, n);
+			if (x > 0 && grid[x - 1][y] === "1") this.expand(grid, x - 1, y, m, n);
+			if (y > 0 && grid[x][y - 1] === "1") this.expand(grid, x, y - 1, m, n);
+		},
+		/*
+		 *		48. Rotate Image
+		 */
+		rotate: function(matrix) {
+			var l = matrix.length;
+			if (l === 0) return;
+			var res = [];
+			for (var i = 0; i < l; i++) {
+				res[i] = [];
+			}
+			for (var i = 0; i < l; i++) {
+				for (var j = 0; j < l; j++) {
+					res[j][l - i - 1] = matrix[i][j];
+				}
+			}
+			matrix.length = 0;
+			for (var i = 0; i < l; i++) {
+				matrix[i] = res[i];
+			}
+		},
+		/*
+		 *		96. Unique Binary Search Trees
+		 */
+		/**
+		 * @param {number} n
+		 * @return {number}
+		 */
+		numTrees: function(n) {
+			var count = new Array(n + 1);
+			count.fill(0);
+			count[0] = 1;
+			count[1] = 1;
+			for (var i = 2; i <= n; i++) {
+				for (var j = 0; j < i; j++) {
+					count[i] += count[j] * count[i - j - 1];
+				}
+			}
+			return count[n];
+		},
+		/*
+		 *		147. Insertion Sort List
+		 */
+		/**
+		 * Definition for singly-linked list.
+		 * function ListNode(val) {
+		 *     this.val = val;
+		 *     this.next = null;
+		 * }
+		 */
+		/**
+		 * @param {ListNode} head
+		 * @return {ListNode}
+		 */
+		insertionSortList: function(head) {
+			var new_head = new ListNode(0);
+			var pre = new_head;
+			var cur = head;
+			var next = null;
+			while (cur !== null) {
+				next = cur.next;
+				while (pre.next !== null && pre.next.val < cur.val) {
+					pre = pre.next;
+				}
+				cur.next = pre.next;
+				pre.next = cur;
+				cur = next;
+				pre = new_head;
+			}
+			return new_head.next;
 		}
 
 
