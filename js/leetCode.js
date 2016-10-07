@@ -743,8 +743,82 @@
 				pre = new_head;
 			}
 			return new_head.next;
+		},
+		/*
+		 *		91. Decode Ways
+		 */
+		/**
+		 * @param {string} s
+		 * @return {number}
+		 */
+		numDecodings: function(s) {
+			if (s.length === 0 || s[0] === "0") return 0;
+			var r1 = 1,
+				r2 = 1;
+			for (var i = 0; i < s.length; i++) {
+				if (s[i] === "0") r1 = 0;
+				if (s[i - 1] === "1" || (s[i - 1] === "2" && parseInt(s[i]) < 7)) {
+					r1 += r2;
+					r2 = r1 - r2;
+				} else {
+					r2 = r1;
+				}
+			}
+			return r1;
+		},
+		/*
+		 *		228. Summary Ranges
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {string[]}
+		 */
+		summaryRanges: function(nums) {
+			var res = [];
+			var to = "->";
+			var start = nums[0];
+			var end = nums[0];
+			var string = "";
+			nums.push(end);
+			for (var i = 1; i < nums.length; i++) {
+				if (nums[i] === end + 1) {
+					end = nums[i];
+				} else {
+					string = "";
+					if (start === end) {
+						string += start;
+					} else {
+						string += start + to + end;
+					}
+					res.push(string);
+					start = nums[i];
+					end = start;
+				}
+			}
+			return res;
+		},
+		/*
+		 *		238. Product of Array Except Self
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number[]}
+		 */
+		productExceptSelf: function(nums) {
+			var l = nums.length;
+			var res = new Array(l);
+			res.fill(1);
+			var right = new Array(l);
+			right.fill(1);
+			for (var i = 1; i < l; i++) {
+				res[i] = res[i - 1] * nums[i - 1];
+			}
+			for (var i = l - 2; i > -1; i--) {
+				right[i] = right[i + 1] * nums[i + 1];
+				res[i] *= right[i];
+			}
+			return res;
 		}
-
 
 	})
 
