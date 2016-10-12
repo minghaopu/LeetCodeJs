@@ -818,6 +818,58 @@
 				res[i] *= right[i];
 			}
 			return res;
+		},
+		/*
+		 *		143. Reorder List && Reverse List
+		 */
+		/**
+		 * Definition for singly-linked list.
+		 * function ListNode(val) {
+		 *     this.val = val;
+		 *     this.next = null;
+		 * }
+		 */
+		/**
+		 * @param {ListNode} head
+		 * @return {void} Do not return anything, modify head in-place instead.
+		 */
+		reverseList: function(head) {
+			if (head === null) return null;
+			var pre = null;
+			var cur = head;
+			while (cur) {
+				var next = cur.next;
+				cur.next = pre;
+				pre = cur;
+				cur = next;
+			}
+			return pre
+		},
+		reorderList: function(head) {
+			if (head === null) return;
+			var cur = head;
+			var fast = head;
+			var slow = head;
+			var mid;
+			while (fast && fast.next) {
+				slow = slow.next;
+				fast = fast.next.next;
+			}
+			if (fast) {
+				mid = slow.next;
+			} else {
+				mid = slow;
+			}
+			var back = reverseList(mid);
+			while (back && cur.next !== back) {
+				var aNext = cur.next;
+				var bNext = back.next;
+				back.next = aNext;
+				cur.next = back;
+				cur = aNext;
+				back = bNext;
+			}
+			if (back === null) cur.next = null;
 		}
 
 	})
