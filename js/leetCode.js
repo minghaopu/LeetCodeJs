@@ -870,7 +870,261 @@
 				back = bNext;
 			}
 			if (back === null) cur.next = null;
+		},
+		,
+		/*
+		 *		16. 3Sum Closest
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @param {number} target
+		 * @return {number}
+		 */
+		threeSumClosest: function(nums, target) {
+			var size = nums.length;
+			if (size < 3) return 0;
+			var closet = nums[0] + nums[1] + nums[2];
+			nums.sort(function(a, b) {
+				if (a - b > 0) return 1;
+				else if (a - b < 0) return -1;
+				else return 0;
+			});
+			for (var first = 0; first < size - 2; first++) {
+				if (first > 0 && nums[first] == nums[first - 1]) continue;
+				var second = first + 1;
+				var third = size - 1;
+				while (second < third) {
+					var curSum = nums[first] + nums[second] + nums[third];
+					if (curSum === target) return curSum;
+					if (Math.abs(curSum - target) < Math.abs(target - closet)) closet = curSum;
+					if (curSum > target) {
+						third--;
+					} else {
+						second++;
+					}
+				}
+			}
+			return closet;
+		},
+		/*
+		 *		43. Multiply Strings
+		 */
+		/**
+		 * @param {string} num1
+		 * @param {string} num2
+		 * @return {string}
+		 */
+		multiply: function(num1, num2) {
+			var sum = [];
+			var l1 = num1.length;
+			var l2 = num2.length;
+			sum.length = l1 + l2;
+			sum.fill(0);
+			for (var i = l1 - 1; i > -1; i--) {
+				var carry = 0;
+				for (var j = l2 - 1; j > -1; j--) {
+					var tmp = parseInt(num1[i]) * parseInt(num2[j]) + sum[i + j + 1] + carry;
+					var mod = tmp % 10;
+					carry = (tmp - mod) / 10;
+					sum[i + j + 1] = mod;
+				}
+				sum[i] += carry;
+			}
+			var start = 0;
+			while (start < l1 + l2 - 1) {
+				if (sum[start] !== 0) break;
+				start++;
+			}
+			return sum.slice(start).join('');
+		},
+		/*
+		 *		116. Populating Next Right Pointers in Each Node
+		 */
+		/**
+		 * Definition for binary tree with next pointer.
+		 * function TreeLinkNode(val) {
+		 *     this.val = val;
+		 *     this.left = this.right = this.next = null;
+		 * }
+		 */
+
+		/**
+		 * @param {TreeLinkNode} root
+		 * @return {void} Do not return anything, modify tree in-place instead.
+		 */
+		connect: function(root) {
+			if (root === null) return;
+			var pre = root;
+			var cur = null;
+			while (pre.left !== null) {
+				cur = pre;
+				while (cur) {
+					cur.left.next = cur.right;
+					if (cur.next) cur.right.next = cur.next.left;
+					cur = cur.next;
+				}
+				pre = pre.left;
+			}
+		},
+		/*
+		 *		98. Validate Binary Search Tree
+		 */
+		/**
+		 * Definition for a binary tree node.
+		 * function TreeNode(val) {
+		 *     this.val = val;
+		 *     this.left = this.right = null;
+		 * }
+		 */
+		/**
+		 * @param {TreeNode} root
+		 * @return {boolean}
+		 */
+		isValidBST: function(root) {
+			return isSubValid(root, null, null);
+		},
+		isSubValid: function(root, min, max) {
+			if (root === null) return true;
+			if ((min && root.val <= min.val) || (max && root.val >= max.val)) return false;
+			return isSubValid(root.left, min, root) && isSubValid(root.right, root, max);
+		},
+		/*
+		 *		162. Find Peak Element
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number}
+		 */
+		findAllPeakElements: function(nums) {
+			var res = [];
+			var l = nums.length;
+			var left = 0;
+			while (left < l - 1) {
+				var start = left + 1;
+				if (start === l - 1) {
+					if (nums[left] < nums[start]) res.push(start);
+					else res.push(left);
+					left++;
+				} else {
+					if (nums[left] < nums[start]) {
+						if (nums[start] < nums[left]) left++;
+						else {
+							res.push(start);
+							left += 2;
+						}
+					} else {
+						res.push(left);
+						left += 2;
+					}
+				}
+			}
+			return res;
+		},
+		findPeakElement: function(nums) {
+			var l = nums.length;
+			var left = 0;
+			while (left < l - 1) {
+				var start = left + 1;
+				if (start === l - 1) {
+					if (nums[left] < nums[start]) return start;
+					else return left;
+				} else {
+					if (nums[left] < nums[start]) {
+						if (nums[start] < nums[start + 1]) left++;
+						else return start;
+					} else {
+						return left;
+					}
+				}
+			}
+			return 0;
+		},
+		/*
+		 *		75. Sort Colors
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {void} Do not return anything, modify nums in-place instead.
+		 */
+		sortColors: function(nums) {
+			var map = [0, 0, 0];
+			for (var i = 0; i < nums.length; i++) {
+				map[nums[i]]++;
+			}
+			var i = 0;
+			var total = 0;
+			var j = 0;
+			while (j < 3) {
+				if (i < map[j]) {
+					nums[total] = j;
+					total++;
+					i++;
+				} else {
+					j++;
+					i = 0;
+				}
+
+			}
+
+		},
+		/*
+		 *		55. Jump Game
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {boolean}
+		 */
+		canJump: function(nums) {
+			var i = 0;
+			var maxIndex = 0;
+			while (i <= maxIndex && i < nums.length) {
+				maxIndex = Math.max(maxIndex, i + nums[i]);
+				i++;
+			}
+			return maxIndex >= nums.length - 1;
+		},
+		/*
+		 *		120. Triangle
+		 */
+		/**
+		 * @param {number[][]} triangle
+		 * @return {number}
+		 */
+		minimumTotal: function(triangle) {
+			121
+			var l = triangle.length;
+			121
+			var minlen = triangle[l - 1];
+			for (var level = l - 2; level > -1; level--) {
+				for (var i = 0; i <= level; i++) {
+					minlen[i] = Math.min(minlen[i], minlen[i + 1]) + triangle[level][i];
+				}
+			}
+			return minlen[0];
+		},
+		/*
+		 *		134. Gas Station
+		 */
+		/**
+		 * @param {number[]} gas
+		 * @param {number[]} cost
+		 * @return {number}
+		 */
+		canCompleteCircuit: function(gas, cost) {
+			var l = gas.length;
+			var tank = 0;
+			var start = 0;
+			var subsum = Number.MAX_VALUE;
+			for (var i = 0; i < l; i++) {
+				tank += gas[i] - cost[i];
+				if (tank < subsum) {
+					subsum = tank;
+					start = i + 1;
+				}
+			}
+			return tank < 0 ? -1 : (start % l);
 		}
+
 
 	})
 
