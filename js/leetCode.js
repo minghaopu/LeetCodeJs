@@ -871,7 +871,6 @@
 			}
 			if (back === null) cur.next = null;
 		},
-		,
 		/*
 		 *		16. 3Sum Closest
 		 */
@@ -1123,6 +1122,135 @@
 				}
 			}
 			return tank < 0 ? -1 : (start % l);
+		},
+		/*
+		 *		39. Combination Sum
+		 */
+		/**
+		 * @param {number[]} candidates
+		 * @param {number} target
+		 * @return {number[][]}
+		 */
+		combinationSum: function(candidates, target) {
+			var res = [];
+			candidates.sort(function(a, b) {
+				if (a - b > 0) return 1;
+				else if (a - b < 0) return -1;
+				else return 0;
+			})
+			for (var i = 0; i < candidates.length; i++) {
+				if (i > 0 && candidates[i] === candidates[i - 1]) continue;
+				var row = [candidates[i]];
+				findRest(res, row, candidates, target - candidates[i], i);
+			}
+			return res;
+		},
+		findRest: function(res, row, candidates, target, start) {
+			if (target === 0) {
+				res.push(row.slice());
+				return;
+			}
+			if (target < candidates[0]) return;
+			for (var i = start; i < candidates.length; i++) {
+				var t = candidates[i];
+				row.push(t);
+				findRest(res, row, candidates, target - t, i);
+				row.pop(t);
+			}
+		},
+		/*
+		 *		187. Repeated DNA Sequences
+		 */
+		/**
+		 * @param {string} s
+		 * @return {string[]}
+		 */
+		findRepeatedDnaSequences: function(s) {
+			var res = [];
+			if (s.length < 11) return res;
+			var map = {};
+			for (var i = 0; i < s.length - 9; i++) {
+				var t = s.substring(i, i + 10);
+				if (map[t] === undefined) map[t] = 1;
+				else map[t]++;
+			}
+			for (var prop in map) {
+				if (map[prop] > 1) res.push(prop);
+			}
+			return res;
+		},
+		/*
+		 *		31. Next Permutation
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {void} Do not return anything, modify nums in-place instead.
+		 */
+		nextPermutation: function(nums) {
+			var violationIndex = nums.length - 2;
+			while (violationIndex > -1 && nums[violationIndex] >= nums[violationIndex + 1]) violationIndex--;
+
+			var reverseArray = nums.slice(violationIndex + 1).reverse();
+
+
+			if (violationIndex !== -1) {
+				reverseArray = nums.slice(0, violationIndex + 1).concat(reverseArray);
+				var swapIndex = violationIndex + 1;
+				while (swapIndex < reverseArray.length && reverseArray[swapIndex] <= reverseArray[violationIndex]) swapIndex++;
+				var t = reverseArray[swapIndex];
+				reverseArray[swapIndex] = reverseArray[violationIndex];
+				reverseArray[violationIndex] = t;
+			}
+			for (var i = 0; i < nums.length; i++) {
+				nums[i] = reverseArray[i];
+			}
+		},
+		/*
+		 *		62. Unique Paths
+		 */
+		/**
+		 * @param {number} m
+		 * @param {number} n
+		 * @return {number}
+		 */
+		uniquePaths: function(m, n) {
+			var dp = [];
+			for (var i = 0; i < m; i++) {
+				dp[i] = [];
+			}
+			for (var i = 0; i < m; i++) {
+				dp[i][0] = 1;
+			}
+			for (var i = 0; i < n; i++) {
+				dp[0][i] = 1;
+			}
+			dp[0][0] = 1;
+			for (var i = 1; i < m; i++) {
+				for (var j = 1; j < n; j++) {
+					dp[i][j] = dp[i][j - 1] + dp[i - 1][j];
+				}
+			}
+			return dp[m - 1][n - 1];
+		},
+		/*
+		 *		78. Subsets
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number[][]}
+		 */
+		subsets: function(nums) {
+			var res = [
+				[]
+			];
+			for (var i = 0; i < nums.length; i++) {
+				var n = res.length;
+				for (var j = 0; j < n; j++) {
+					res.push(res[j].slice(0));
+					res[n + j].push(nums[i]);
+				}
+			}
+			return res;
 		}
 
 

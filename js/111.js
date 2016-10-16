@@ -18,7 +18,9 @@ var createTree = function(nums) {
     if (nums.length === 0) return null;
     var q = [];
     var root = new TreeNode(nums[0]);
-    var node = null, left = null, right = null;
+    var node = null,
+        left = null,
+        right = null;
     var i = 1;
     q.push(root);
     while (q.length !== 0 && i < nums.length) {
@@ -26,14 +28,14 @@ var createTree = function(nums) {
         if (nums[i] !== null) {
             left = new TreeNode(nums[i]);
             q.push(left);
-        }else {
+        } else {
             left = null;
         }
         i++;
         if (nums[i] !== null) {
             right = new TreeNode(nums[i]);
             q.push(right);
-        }else {
+        } else {
             right = null;
         }
         i++;
@@ -43,9 +45,9 @@ var createTree = function(nums) {
     return root;
 }
 var minDepth = function(root) {
-	if (root === null) return 0;
+    if (root === null) return 0;
     if (root.left === null && root.right === null) return 1;
     else if (root.right === null && root.left !== null) return 1 + minDepth(root.left);
     else if (root.right !== null && root.left === null) return 1 + minDepth(root.right);
-    else return 1 + Math.min(minDepth(root.left), minDepth(root.right)); 
+    else return 1 + Math.min(minDepth(root.left), minDepth(root.right));
 };
