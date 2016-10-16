@@ -1251,9 +1251,106 @@
 				}
 			}
 			return res;
+		},
+		/*
+		 *		268. Missing Number
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number}
+		 */
+		missingNumber: function(nums) {
+			var res = nums.length;
+			for (var i = 0; i < nums.length; i++) {
+				res ^= i ^ nums[i];
+			}
+			return res;
+		},
+		/*
+		 *		34. Search for a Range
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @param {number} target
+		 * @return {number[]}
+		 */
+		searchRange: function(nums, target) {
+			var start = 0;
+			var end = nums.length;
+			var mid, left, right;
+			while (start < end) {
+				mid = Math.floor((start + end) / 2);
+				if (nums[mid] >= target) {
+					end = mid;
+				} else {
+					start = mid + 1;
+				}
+			}
+			left = start;
+			start = 0;
+			end = nums.length;
+			while (start < end) {
+				mid = Math.floor((start + end) / 2);
+				if (nums[mid] <= target) {
+					start = mid + 1;
+				} else {
+					end = mid;
+				}
+			}
+			right = start;
+
+			return left === right ? [-1, -1] : [left, start - 1];
+		},
+		/*
+		 *		236. Lowest Common Ancestor of a Binary Tree
+		 */
+		/**
+		 * Definition for a binary tree node.
+		 * function TreeNode(val) {
+		 *     this.val = val;
+		 *     this.left = this.right = null;
+		 * }
+		 */
+		/**
+		 * @param {TreeNode} root
+		 * @param {TreeNode} p
+		 * @param {TreeNode} q
+		 * @return {TreeNode}
+		 */
+		lowestCommonAncestor: function(root, p, q) {
+			// if p, q in dif sub tree, root must be the common.
+			// if p, q in same tree, one of them must be common;
+			if (!root || root === p || root === q) return root;
+			var left = lowestCommonAncestor(root.left, p, q);
+			var right = lowestCommonAncestor(root.right, p, q);
+			return !left ? right : (!right ? left : root);
+		},
+		/*
+		 *		73. Set Matrix Zeroes
+		 */
+		/**
+		 * @param {number[][]} matrix
+		 * @return {void} Do not return anything, modify matrix in-place instead.
+		 */
+		setZeroes: function(matrix) {
+			var col0 = false;
+			var m = matrix.length;
+			var n = matrix[0].length;
+			for (var i = 0; i < m; i++) {
+				if (matrix[i][0] === 0) col0 = true;
+				for (var j = 1; j < n; j++) {
+					if (matrix[i][j] === 0) {
+						matrix[i][0] = matrix[0][j] = 0;
+					}
+				}
+			}
+			for (var i = m - 1; i > -1; i--) {
+				for (var j = n - 1; j > 0; j--) {
+					if (matrix[i][0] === 0 || matrix[0][j] === 0) matrix[i][j] = 0;
+				}
+				if (col0) matrix[i][0] = 0;
+			}
 		}
-
-
 	})
 
 	window.l = window.lCode = lCode;
