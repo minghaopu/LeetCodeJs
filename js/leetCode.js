@@ -1350,6 +1350,26 @@
 				}
 				if (col0) matrix[i][0] = 0;
 			}
+		},
+		/*
+		 *		89. Gray Code
+		 */
+		/**
+		 * @param {number} n
+		 * @return {number[]}
+		 */
+		grayCode: function(n) {
+			var res = [0];
+			for (var i = 1; i <= n; i++) {
+				var l = Math.pow(2, i);
+				var half = l / 2;
+				var t = res.slice(0).reverse();
+				res.length = l;
+				for (var j = 0; j < half; j++) {
+					res[j + half] = t[j] ^ half;
+				}
+			}
+			return res;
 		}
 	})
 
