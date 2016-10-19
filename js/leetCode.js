@@ -1370,6 +1370,215 @@
 				}
 			}
 			return res;
+		},
+		/*
+		 *		166. Fraction to Recurring Decimal
+		 */
+		/**
+		 * @param {number} numerator
+		 * @param {number} denominator
+		 * @return {string}
+		 */
+		fractionToDecimal: function(numerator, denominator) {
+			if (numerator === 0) return "0";
+			var res = (numerator < 0 ^ denominator < 0) ? "-" : "";
+			var nn = Math.abs(numerator);
+			var dd = Math.abs(denominator);
+			res += "" + Math.floor(nn / dd);
+			var rmd = nn % dd;
+			if (!rmd) return res;
+			res += ".";
+			rmd *= 10;
+			var hash = {};
+			while (rmd) {
+				if (hash[rmd] !== undefined) {
+					res = res.slice(0, hash[rmd]) + "(" + res.slice(hash[rmd]) + ")";
+					break;
+				}
+				var q = Math.floor(rmd / dd);
+				hash[rmd] = res.length;
+				res += "" + q;
+				rmd = (rmd % dd) * 10;
+			}
+			return res;
+		},
+		/*
+		 *		61. Rotate List
+		 */
+		/**
+		 * Definition for singly-linked list.
+		 * function ListNode(val) {
+		 *     this.val = val;
+		 *     this.next = null;
+		 * }
+		 */
+		/**
+		 * @param {ListNode} head
+		 * @param {number} k
+		 * @return {ListNode}
+		 */
+		rotateRight: function(head, k) {
+			if (!head) return head;
+			var len = 1;
+			var last = head;
+			while (last.next) {
+				last = last.next;
+				len++;
+			}
+			last.next = head;
+			k %= len;
+			if (k) {
+				for (var i = 0; i < len - k; i++) last = last.next;
+			}
+			head = last.next;
+			last.next = null;
+			return head;
+		},
+		/*
+		 *
+		 *     35. Search Insert Position
+		 *
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @param {number} target
+		 * @return {number}
+		 */
+		searchInsert: function(nums, target) {
+			var l = 0,
+				r = nums.length - 1,
+				mid;
+			while (l <= r) {
+				mid = Math.floor((r - l) / 2) + l;
+				if (nums[mid] < target) l = mid + 1;
+				else r = mid - 1;
+			}
+			return l;
+		},
+		/*
+		 *
+		 *     338. Counting Bits
+		 *
+		 */
+		/**
+		 * @param {number} num
+		 * @return {number[]}
+		 */
+		countBits: function(num) {
+			var res = [0];
+			for (var i = 1; i <= num; i++) {
+				res[i] = res[i & (i - 1)] + 1;
+			}
+			return res;
+		},
+		/*
+		 *
+		 *     64. Minimum Path Sum
+		 *
+		 */
+		/**
+		 * @param {number[][]} grid
+		 * @return {number}
+		 */
+		minPathSum: function(grid) {
+			var m = grid.length;
+			if (m === 0) return 0;
+			var n = grid[0].length;
+			var res = [];
+			res.length = m;
+			res[0] = [grid[0][0]]
+			for (var i = 1; i < m; i++) {
+				res[i] = [];
+				res[i][0] = grid[i][0] + res[i - 1][0];
+			}
+			for (var j = 1; j < n; j++) {
+				res[0][j] = grid[0][j] + res[0][j - 1];
+			}
+			for (i = 1; i < m; i++) {
+				for (j = 1; j < n; j++) {
+					res[i][j] = Math.min(res[i - 1][j], res[i][j - 1]) + grid[i][j];
+				}
+			}
+			return res[m - 1][n - 1];
+		},
+
+		/**
+		 * Definition for singly-linked list.
+		 * function ListNode(val) {
+		 *     this.val = val;
+		 *     this.next = null;
+		 * }
+		 */
+		/**
+		 * @param {ListNode} head
+		 * @param {number} m
+		 * @param {number} n
+		 * @return {ListNode}
+		 */
+		reverseBetween: function(head, m, n) {
+			if (m === n) return head;
+			var newHead = new ListNode(0);
+			var pre = newHead;
+			var p = head;
+			var pm, prem, next;
+			for (var i = 1; i < m; i++) {
+				pre.next = p;
+				pre = pre.next;
+				p = p.next;
+			}
+			prem = pre;
+			pm = p;
+			for (i = m; i < n; i++) {
+				next = p.next;
+				p.next = pre;
+				pre = p;
+				p = next;
+			}
+			pm.next = p.next;
+			p.next = pre;
+			prem.next = p;
+			return newHead.next;
+		},
+		/**
+		 * @param {string} path
+		 * @return {string}
+		 */
+		simplifyPath: function(path) {
+			var tokens = path.split("/");
+			var stack = [];
+			for (var i = 0; i < tokens.length; i++) {
+				var token = tokens[i];
+				if (token === "" || token === ".") continue;
+				if (token === "..") {
+					if (stack.length !== 0) stack.pop();
+				} else stack.push(token);
+			}
+			return "/" + stack.join("/");
+		},
+		/**
+		 * @param {number[][]} matrix
+		 * @param {number} target
+		 * @return {boolean}
+		 */
+		searchMatrix: function(matrix, target) {
+			var l = 0;
+			var r = matrix.length - 1;
+			var mid;
+			while (l <= r) {
+				mid = Math.floor((r - l) / 2) + l;
+				if (matrix[mid][0] < target) l = mid + 1;
+				else r = mid - 1;
+			}
+			var row = l;
+			if (row >= matrix.length || matrix[row][0] > target) row--;;
+			l = 0;
+			r = matrix[0].length;
+			while (l <= r) {
+				mid = Math.floor((r - l) / 2) + l;
+				if (matrix[row][mid] < target) l = mid + 1;
+				else r = mid - 1;
+			}
+			return matrix[row][l] == target;
 		}
 	})
 
