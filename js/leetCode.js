@@ -1501,7 +1501,11 @@
 			}
 			return res[m - 1][n - 1];
 		},
-
+		/*
+		 *
+		 *     92. Reverse Linked List II
+		 *
+		 */
 		/**
 		 * Definition for singly-linked list.
 		 * function ListNode(val) {
@@ -1539,6 +1543,11 @@
 			prem.next = p;
 			return newHead.next;
 		},
+		/*
+		 *
+		 *     71. Simplify Path
+		 *
+		 */
 		/**
 		 * @param {string} path
 		 * @return {string}
@@ -1555,30 +1564,54 @@
 			}
 			return "/" + stack.join("/");
 		},
-		/**
-		 * @param {number[][]} matrix
-		 * @param {number} target
-		 * @return {boolean}
+		/*
+		 *
+		 *     388. Longest Absolute File Path
+		 *
 		 */
-		searchMatrix: function(matrix, target) {
-			var l = 0;
-			var r = matrix.length - 1;
-			var mid;
-			while (l <= r) {
-				mid = Math.floor((r - l) / 2) + l;
-				if (matrix[mid][0] < target) l = mid + 1;
-				else r = mid - 1;
+		/**
+		 * @param {string} input
+		 * @return {number}
+		 */
+		lengthLongestPath: function(input) {
+			input += "\n";
+			var token = "";
+			var extension = "";
+			var level = 0,
+				count = 0,
+				res = 0;
+			var len = [];
+			var isFile = false;
+			for (var i = 0; i < input.length; i++) {
+				var c = input[i];
+				if (c === "\t") {
+					count++;
+				} else if (c === "\n") {
+					while (level > count) {
+						len.pop();
+						level--;
+					}
+					if (isFile) {
+						var t = 0;
+						if (level > 0) t += len[level - 1];
+						t += token.length + extension.length + level;
+						res = Math.max(res, t);
+						extension = "";
+						isFile = false;
+					} else {
+						if (level > 0) len.push(len[level - 1] + token.length);
+						else len.push(token.length);
+						level++;
+					}
+					token = "";
+					count = 0;
+				} else {
+					if (c === ".") isFile = true;
+					if (isFile) extension += c;
+					else token += c;
+				}
 			}
-			var row = l;
-			if (row >= matrix.length || matrix[row][0] > target) row--;;
-			l = 0;
-			r = matrix[0].length;
-			while (l <= r) {
-				mid = Math.floor((r - l) / 2) + l;
-				if (matrix[row][mid] < target) l = mid + 1;
-				else r = mid - 1;
-			}
-			return matrix[row][l] == target;
+			return res;
 		}
 	})
 
