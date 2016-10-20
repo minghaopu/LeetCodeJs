@@ -1612,6 +1612,38 @@
 				}
 			}
 			return res;
+		},
+		/*
+		 *
+		 *     74. Search a 2D Matrix
+		 *
+		 */
+		/**
+		 * @param {number[][]} matrix
+		 * @param {number} target
+		 * @return {boolean}
+		 */
+		searchMatrix: function(matrix, target) {
+			var l = 0;
+			var r = matrix.length - 1;
+			var mid;
+			while (l <= r) {
+				mid = Math.floor((r - l) / 2) + l;
+				if (matrix[mid][0] < target) l = mid + 1;
+				else r = mid - 1;
+			}
+			var row = l;
+			if (row >= matrix.length) row--;
+			if (matrix[row][0] > target) row--;
+			if (row === -1) return false;
+			l = 0;
+			r = matrix[0].length;
+			while (l <= r) {
+				mid = Math.floor((r - l) / 2) + l;
+				if (matrix[row][mid] < target) l = mid + 1;
+				else r = mid - 1;
+			}
+			return matrix[row][l] == target;
 		}
 	})
 
