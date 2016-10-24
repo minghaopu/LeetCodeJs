@@ -1644,7 +1644,55 @@
 				else r = mid - 1;
 			}
 			return matrix[row][l] == target;
+		},
+		/*
+		 *
+		 *     77. Combinations
+		 *
+		 */
+		/**
+		 * @param {number} n
+		 * @param {number} k
+		 * @return {number[][]}
+		 */
+		combine: function(n, k) {
+			var res = [];
+			var i = 0;
+			var tmp = new Array(k);
+			tmp.fill(0);
+			while (i >= 0) {
+				tmp[i]++;
+				if (tmp[i] > n) i--;
+				else if (i === k - 1) res.push(tmp.slice(0));
+				else {
+					i++;
+					tmp[i] = tmp[i - 1];
+				}
+			}
+			return res;
+		},
+		/**
+		 * dfs way
+		 */
+		dfsCombine: function(res, tmp, start, n, k) {
+			if (k === 0) {
+				res.push(tmp.slice(0));
+				return;
+			}
+			for (var i = start; i + k <= n + 1; i++) {
+				tmp.push(i);
+				this.dfsCombine(res, tmp, i + 1, n, k - 1);
+				tmp.pop();
+			}
+		},
+		combine2: function(n, k) {
+			var res = [];
+			var tmp = [];
+			this.dfsCombine(res, tmp, 1, n, k);
+			return res;
 		}
+
+
 	})
 
 	window.l = window.lCode = lCode;
