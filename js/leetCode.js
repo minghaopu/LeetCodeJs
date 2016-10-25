@@ -1690,6 +1690,39 @@
 			var tmp = [];
 			this.dfsCombine(res, tmp, 1, n, k);
 			return res;
+		},
+		/*
+		 *
+		 *     240. Search a 2D Matrix II
+		 *
+		 */
+		/**
+		 * @param {number[][]} matrix
+		 * @param {number} target
+		 * @return {boolean}
+		 */
+		searchMatrix2: function(matrix, target) {
+			var m = matrix.length;
+			var n = matrix[0].length;
+			var i, j;
+			if (m > n) {
+				i = 0;
+				j = n - 1;
+				while (j > -1 && i < m) {
+					if (matrix[i][j] == target) return true;
+					else if (matrix[i][j] > target) j--;
+					else i++;
+				}
+			} else {
+				i = m - 1;
+				j = 0
+				while (i > -1 && j < n) {
+					if (matrix[i][j] == target) return true;
+					else if (matrix[i][j] > target) i--;
+					else j++;
+				}
+			}
+			return false;
 		}
 
 
