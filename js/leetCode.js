@@ -1723,6 +1723,154 @@
 				}
 			}
 			return false;
+		},
+		/*
+		 *
+		 *     80. Remove Duplicates from Sorted Array II
+		 *
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number}
+		 */
+		removeDuplicates: function(nums) {
+			var count = 0;
+			for (var i = 2; i < nums.length; i++) {
+				if (nums[i] == nums[i - 2 - count]) count++;
+				else nums[i - count] = nums[i];
+			}
+			nums.length -= count;
+			return nums.length;
+		},
+		/*
+		 *
+		 *     109. Convert Sorted List to Binary Search Tree
+		 *
+		 */
+		sortedListToBST: function(head) {
+			if (head === null) return null;
+			if (head.next === null) return new TreeNode(head.val);
+			var slow = head,
+				fast = head;
+			var pre = new ListNode(0);
+			pre.next = head;
+			while (fast && fast.next) {
+				slow = slow.next;
+				pre = pre.next;
+				fast = fast.next.next;
+			}
+			var root = new TreeNode(slow.val);
+			var right = slow.next;
+			slow.next = null;
+			pre.next = null;
+			root.left = sortedListToBST(head);
+			root.right = sortedListToBST(right);
+			return root;
+		},
+		/*
+		 *
+		 *     130. Surrounded Regions
+		 *
+		 */
+		/**
+		 * @param {character[][]} board
+		 * @return {void} Do not return anything, modify board in-place instead.
+		 */
+		solve: function(board) {
+			var x, y;
+			var m = board.length;
+			if (m === 0) return;
+			var n = board[0].length;
+			for (x = 0; x < m; x++) {
+				check(board, x, 0, m, n);
+				if (n > 1) check(board, x, n - 1, m, n);
+			}
+			for (y = 0; y < n; y++) {
+				check(board, 0, y, m, n);
+				if (m > 1) check(board, m - 1, y, m, n);
+			}
+			for (x = 0; x < m; x++) {
+				for (y = 0; y < n; y++) {
+					if (board[x][y] === "O") board[x][y] = "X";
+				}
+			}
+			for (x = 0; x < m; x++) {
+				for (y = 0; y < n; y++) {
+					if (board[x][y] === "1") board[x][y] = "O";
+				}
+			}
+		},
+		check: function(board, x, y, m, n) {
+			if (board[x][y] === "O") {
+				board[x][y] = "1";
+				if (x > 1) check(board, x - 1, y, m, n);
+				if (y > 1) check(board, x, y - 1, m, n);
+				if (x < m - 1) check(board, x + 1, y, m, n);
+				if (y < n - 1) check(board, x, y + 1, m, n);
+			}
+		},
+		/*
+		 *
+		 *     93. Restore IP Addresses
+		 *
+		 */
+		/**
+		 * @param {string} s
+		 * @return {string[]}
+		 */
+		restoreIpAddresses: function(s) {
+			var first, second, third;
+			var s1, s2, s3, s4;
+			var length = s.length;
+			if (length < 4 || length > 12) return [];
+			var res = [];
+			for (first = 1; first < 4; first++) {
+				s1 = s.substring(0, first);
+				if (s1[0] === "0" && s1.length > 1) continue;
+				if (parseInt(s1) < 256) {
+					for (second = first + 1; second < length && second < first + 4; second++) {
+						s2 = s.substring(first, second);
+						if (s2[0] === "0" && s2.length > 1) continue;
+						if (parseInt(s2) < 256) {
+							for (third = second + 1; third < length && third < second + 4; third++) {
+								s3 = s.substring(second, third);
+								if (s3[0] === "0" && s3.length > 1) continue;
+								if (parseInt(s3) < 256) {
+									s4 = s.substring(third);
+									if (s4[0] === "0" && s4.length > 1) continue;
+									if (parseInt(s4) < 256) res.push(s1 + "." + s2 + "." + s3 + "." + s4);
+								}
+							}
+						}
+					}
+				}
+			}
+			return res;
+		},
+		/*
+		 *
+		 *     33. Search in Rotated Sorted Array
+		 *
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @param {number} target
+		 * @return {number}
+		 */
+		searchInRotateArray: function(nums, target) {
+			var l = 0,
+				h = nums.length - 1;
+			var mid;
+			while (l <= h) {
+				mid = Math.round((l + h) / 2);
+				if (nums[mid] === target) return mid;
+				else if (
+					(nums[mid] >= nums[l] && (target < nums[l] || target > nums[mid])) ||
+					(nums[mid] < nums[l] && target > nums[mid] && target <= nums[h])
+				) l = mid + 1;
+				else h = mid - 1;
+			}
+			return -1;
 		}
 
 
