@@ -1871,8 +1871,61 @@
 				else h = mid - 1;
 			}
 			return -1;
+		},
+		/*
+		 *
+		 *     319. Bulb Switcher
+		 *
+		 */
+		/**
+		 * @param {number} n
+		 * @return {number}
+		 */
+		bulbSwitch: function(n) {
+			var count = 0;
+			for (var i = 1; i * i <= n; i++) {
+				count++;
+			}
+			return count;
+		},
+		/*
+		 *
+		 *     289. Game of Life
+		 *
+		 */
+		/**
+		 * @param {number[][]} board
+		 * @return {void} Do not return anything, modify board in-place instead.
+		 */
+		countLives: function(board, x, y, m, n) {
+			var count = -board[x][y];
+			for (var i = Math.max(x - 1, 0); i <= Math.min(x + 1, m - 1); i++) {
+				for (var j = Math.max(y - 1, 0); j <= Math.min(y + 1, n - 1); j++) {
+					count += (board[i][j] & 1);
+				}
+			}
+			return count;
+		},
+		gameOfLife: function(board) {
+			var m = board.length;
+			if (m === 0) return;
+			var n = board[0].length;
+			for (var i = 0; i < m; i++) {
+				for (var j = 0; j < n; j++) {
+					var lives = countLives(board, i, j, m, n);
+					if (board[i][j] === 1) {
+						if (lives >= 2 && lives <= 3) board[i][j] = 3;
+					} else {
+						if (lives === 3) board[i][j] = 2;
+					}
+				}
+			}
+			for (var i = 0; i < m; i++) {
+				for (var j = 0; j < n; j++) {
+					board[i][j] >>= 1;
+				}
+			}
 		}
-
 
 	})
 
