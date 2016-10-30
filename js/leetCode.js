@@ -1925,6 +1925,39 @@
 					board[i][j] >>= 1;
 				}
 			}
+		},
+		/*
+		 *
+		 *     306. Additive Number
+		 *
+		 */
+		/**
+		 * @param {string} num
+		 * @return {boolean}
+		 */
+		isAdditiveNumber: function(num) {
+			var l = num.length;
+			if (l < 3) return false;
+			return this.isSubAdditiveNumber(num, l, 0, 1, 1);
+		},
+		isSubAdditiveNumber: function(num, length, start, sublength1, sublength2) {
+			var sub, res;
+			var maxl1 = num[start] === "0" ? 1 : length - start - sublength2 - 1;
+			for (var l1 = sublength1; l1 <= maxl1; l1++) {
+				for (var l2 = sublength2; start + l1 + l2 <= length - 1; l2++) {
+					if (num[start + l1] === "0" && l2 > 1) continue;
+					// num1 = parseInt(num.substr(start, l1));
+					// num2 = parseInt(num.substr(start + l1, l2));
+					// num3 = num1 + num2;
+					// sub = num3.toString();
+					sub = (parseInt(num.substr(start, l1)) + parseInt(num.substr(start + l1, l2))).toString();
+					res = num.substr(start + l1 + l2);
+					if (res.indexOf(sub) === 0) {
+						if (l1 + l2 + sub.length + start === length || (this.isSubAdditiveNumber(num, length, start + l1, l2, sub.length))) return true;
+					}
+				}
+			}
+			return false;
 		}
 
 	})
