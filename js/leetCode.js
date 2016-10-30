@@ -1958,6 +1958,35 @@
 				}
 			}
 			return false;
+		},
+		/**
+		 * @param {number[]} nums
+		 * @param {number} k
+		 * @return {number[]}
+		 */
+		topKFrequent: function(nums, k) {
+			var hash = {};
+			var i;
+			for (i = 0; i < nums.length; i++) {
+				if (hash[nums[i]] === undefined) hash[nums[i]] = 1;
+				else hash[nums[i]]++;
+			}
+			var queue = [];
+			i = 0;
+			for (var prop in hash) {
+				queue[i] = [parseInt(prop), parseInt(hash[prop])];
+				i++;
+			}
+			queue.sort(function(a, b) {
+				if (a[1] > b[1]) return -1;
+				else if (a[1] < b[1]) return 1;
+				else return 0;
+			})
+			var res = [];
+			for (i = 0; i < k; i++) {
+				res[i] = queue[i][0];
+			}
+			return res;
 		}
 
 	})
