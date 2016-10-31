@@ -2031,7 +2031,32 @@
 			if (count1 > Math.min(nums.length / 3)) res.push(a)
 			if (count2 > Math.min(nums.length / 3)) res.push(b);
 			return res;
-		}
+		},
+		/*
+		 *
+		 *     334. Increasing Triplet Subsequence
+		 *
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {boolean}
+		 */
+		increasingTriplet: function(nums) {
+			if (nums.length < 3) return false;
+			var min1 = Number.MAX_VALUE;
+			var min2 = Number.MAX_VALUE;
+			for (var i = 0; i < nums.length; i++) {
+				var t = nums[i];
+				if (t <= min1) {
+					min1 = t;
+				} else if (t <= min2) {
+					min2 = t;
+				} else {
+					return true;
+				}
+			}
+			return false;
+		};
 
 	})
 
