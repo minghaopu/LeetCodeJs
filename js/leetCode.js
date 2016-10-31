@@ -1959,6 +1959,11 @@
 			}
 			return false;
 		},
+		/*
+		 *
+		 *     347. Top K Frequent Elements
+		 *
+		 */
 		/**
 		 * @param {number[]} nums
 		 * @param {number} k
@@ -1986,6 +1991,45 @@
 			for (i = 0; i < k; i++) {
 				res[i] = queue[i][0];
 			}
+			return res;
+		},
+		/*
+		 *
+		 *     229. Majority Element II
+		 *
+		 */
+		/**
+		 * @param {number[]} nums
+		 * @return {number[]}
+		 */
+		majorityElement: function(nums) {
+			var count1 = 0,
+				count2 = 0,
+				a = 0,
+				b = 1;
+			var res = [];
+			for (var i = 0; i < nums.length; i++) {
+				if (a === nums[i]) count1++;
+				else if (b === nums[i]) count2++;
+				else if (count1 === 0) {
+					a = nums[i];
+					count1 = 1;
+				} else if (count2 === 0) {
+					b = nums[i];
+					count2 = 1;
+				} else {
+					count1--;
+					count2--;
+				}
+
+			}
+			count1 = count2 = 0;
+			for (var i = 0; i < nums.length; i++) {
+				if (a === nums[i]) count1++;
+				else if (b === nums[i]) count2++;
+			}
+			if (count1 > Math.min(nums.length / 3)) res.push(a)
+			if (count2 > Math.min(nums.length / 3)) res.push(b);
 			return res;
 		}
 
