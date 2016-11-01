@@ -2131,6 +2131,36 @@
 				}
 			}
 			return res;
+		},
+		/*
+		 *
+		 *     59. Spiral Matrix II
+		 *
+		 */
+		/**
+		 * @param {number} n
+		 * @return {number[][]}
+		 */
+		generateMatrix: function(n) {
+			if (n <= 0) return [];
+			var row_min = 0,
+				col_min = 0,
+				row_max = n - 1,
+				col_max = n - 1;
+			var row, col, value = 1;
+			var res = [];
+			for (var i = 0; i < n; i++) res[i] = [];
+			while (value <= n * n) {
+				for (row = row_min, col = col_min; col <= col_max; col++, value++) res[row][col] = value;
+				row_min++;
+				for (row = row_min, col = col_max; row <= row_max; row++, value++) res[row][col] = value;
+				col_max--;
+				for (row = row_max, col = col_max; col >= col_min; col--, value++) res[row][col] = value;
+				row_max--;
+				for (row = row_max, col = col_min; row >= row_min; row--, value++) res[row][col] = value;
+				col_min++;
+			}
+			return res;
 		}
 
 	})
