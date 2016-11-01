@@ -11,6 +11,21 @@ var singleNumber = function(nums) {
 	return nums[0];
 };
 
+// Given an array of integers, every element appears three times except for one. Find that single one.
+
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var singleNumber2 = function(nums) {
+    var ones = 0, twos = 0;
+    for (var i = 0; i < nums.length; i++) {
+        ones = (ones ^ nums[i]) & ~twos;
+        twos = (twos ^ nums[i]) & ~ones;
+    }
+    return ones;
+};
+
 
 // Given an array of numbers nums, in which exactly two elements appear only once and all the other elements appear exactly twice. 
 // Find the two elements that appear only once.

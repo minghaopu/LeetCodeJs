@@ -2074,7 +2074,64 @@
 					nums[i - 1] = t;
 				}
 			}
-		};
+		},
+		/*
+		 *
+		 *     318. Maximum Product of Word Lengths
+		 *
+		 */
+		/**
+		 * @param {string[]} words
+		 * @return {number}
+		 */
+		maxProduct: function(words) {
+			var l = words.length;
+			var res = 0
+			if (l < 2) return res;
+			var mask = [];
+			var word;
+			var charMap = {
+				"a": 0,
+				"b": 1,
+				"c": 2,
+				"d": 3,
+				"e": 4,
+				"f": 5,
+				"g": 6,
+				"h": 7,
+				"i": 8,
+				"j": 9,
+				"k": 10,
+				"l": 11,
+				"m": 12,
+				"n": 13,
+				"o": 14,
+				"p": 15,
+				"q": 16,
+				"r": 17,
+				"s": 18,
+				"t": 19,
+				"u": 20,
+				"v": 21,
+				"w": 22,
+				"x": 23,
+				"y": 24,
+				"z": 25
+			};
+			for (var i = 0; i < l; i++) {
+				mask[i] = 0;
+				word = words[i];
+				for (var j = 0; j < word.length; j++) {
+					mask[i] |= 1 << charMap[word[j]];
+				}
+			}
+			for (i = 0; i < l; i++) {
+				for (j = i + 1; j < l; j++) {
+					if ((mask[i] & mask[j]) === 0) res = Math.max(res, words[i].length * words[j].length);
+				}
+			}
+			return res;
+		}
 
 	})
 
