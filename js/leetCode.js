@@ -2162,6 +2162,11 @@
 			}
 			return res;
 		},
+		/*
+		 *
+		 *     386. Lexicographical Numbers
+		 *
+		 */
 		/**
 		 * @param {number} n
 		 * @return {number[]}
@@ -2182,6 +2187,71 @@
 				}
 			}
 			return res;
+		},
+		/*
+		 *
+		 *     222. Count Complete Tree Nodes
+		 *
+		 */
+		/**
+		 * Definition for a binary tree node.
+		 * function TreeNode(val) {
+		 *     this.val = val;
+		 *     this.left = this.right = null;
+		 * }
+		 */
+		/**
+		 * @param {TreeNode} root
+		 * @return {number}
+		 */
+		countNodes: function(root) {
+			if (root === null) return 0;
+			var curL = root.left;
+			var curR = root.left;
+			var num = 1;
+			while (curR) {
+				curR = curR.right;
+				curL = curL.left;
+				num <<= 1;
+			}
+			return num + (curL === null ? countNodes(root.right) : countNodes(root.left));
+		},
+		/*
+		 *
+		 *     332. Reconstruct Itinerary
+		 *
+		 */
+		/**
+		 * @param {string[][]} tickets
+		 * @return {string[]}
+		 */
+		findItinerary: function(tickets) {
+			if (tickets.length === 0) return [];
+			var table = {};
+			var visited = {};
+			for (var i = 0; i < tickets.length; i++) {
+				var start = tickets[i][0];
+				var end = tickets[i][1];
+				if (table[start] === undefined) table[start] = [end];
+				else table[start].push(end);
+			}
+			for (var prop in table) {
+				table[prop].sort();
+			}
+			var route = [];
+			var dfs = ["JFK"];
+			while (dfs.length !== 0) {
+				var top = dfs[dfs.length - 1];
+				if (table[top] === undefined || table[top].length === 0) {
+					route.push(top);
+					dfs.pop()
+				} else {
+					dfs.push(table[top][0]);
+					table[top].shift();
+				}
+			}
+			route.reverse();
+			return route;
 		}
 
 	})
