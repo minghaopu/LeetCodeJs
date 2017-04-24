@@ -2,7 +2,7 @@
  * @param {string} s
  * @return {string}
  */
- var longestParlindrome = function (s) {
+ var longestPalindrome = function (s) {
  	let start = 0, end = 0;
  	const getCenter = function (s, c) {
  		let l = c, r = c;
@@ -63,3 +63,34 @@ var longestPalindrome = function(s) {
     
     return s.substr(start, length);
 };
+
+
+var longestPalindrome = function(s) {
+    let str = (s => {
+        let str = "&";
+        for (let i = 0; i < s.length; i++) {
+            str += "#" + s[i];
+        }
+        str += "#~";
+        return str;
+    })(s);
+
+    let rightMax = 0, middlePoint = 0, maxMiddle = 0;
+    let lenArr = new Array(str.length).fill(1);
+
+    for (let i = 1; i < str.length; i++) {
+        let iMirror = 2 * middlePoint - i;
+        if (rightMax > i) {
+            lenArr[i] = Math.min(rightMax - i, lenArr[iMirror]);
+        }
+        while (str[i-lenArr[i]] === str[i+lenArr[i]]) lenArr[i]++;
+
+        if (lenArr[i] + i > rightMax) {
+            rightMax = lenArr[i] + i;
+            middlePoint = i;
+        }
+
+        if (lenArr[i] > lenArr[maxMiddle]) maxMiddle = i;
+    }
+    return s.substr(Math.floor((maxMiddle - lenArr[maxMiddle]) / 2), lenArr[maxMiddle] - 1);
+}
