@@ -8,12 +8,12 @@ var wordBreak = function(s, wordDict) {
     let words = new Set(wordDict);
     let cache = {};
     let l = s.length;
-    let res = (function dfs(s) {
+    return (function dfs(s) {
         if (cache[s] !== undefined) {
             return cache[s].slice();
         }
         let res = [];
-        
+
         if (words.has(s)) res.push(s);
         for (let i = 1; i < s.length; i++) {
             let sub = s.substr(i);
@@ -28,5 +28,4 @@ var wordBreak = function(s, wordDict) {
         cache[s] = res.slice();
         return res;
     })(s);
-    return res;
 };

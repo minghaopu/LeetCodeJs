@@ -19,7 +19,6 @@ var findItinerary = function(tickets) {
     }
     let path = [];
     (function dfs(start) {
-        console.log(start);
         if (map[start] !== undefined) {
             while (map[start].length) {
                 let next = map[start].shift();

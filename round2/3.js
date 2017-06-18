@@ -36,7 +36,7 @@ var lengthOfLongestSubstring2 = function(s) {
  * @return {number}
  */
 var lengthOfLongestSubstring_Fastest = function(s) {
-    var cache = new Map();
+    var cache = {};
     var start = 0, length = 0;
     for (let i = 0; i < s.length; i++) {
         if (cache[s[i]] !== undefined && cache[s[i]] >= start) start = cache[s[i]] + 1;

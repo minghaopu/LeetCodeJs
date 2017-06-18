@@ -44,7 +44,7 @@ var deserialize = function(data) {
     let leftOrRight = 0; // 0 -> left , 1 -> right;
     while (values.length !== 0) {
         val = values.shift();
-        if (val === "") continue;
+        if (val === "") break;
         if (queue.length === 0) {
             if (val === "null") return null;
             root = new TreeNode(parseInt(val));

@@ -28,18 +28,15 @@ LFUCache.prototype.addNode = function(node) {
         this.fmap[f].head.post = this.fmap[f].tail;
         this.fmap[f].tail.pre = this.fmap[f].head;
     }
-    let post = this.fmap[f].head.post;
-    post.pre = node;
-    node.post = post;
-
     node.pre = this.fmap[f].head;
+    node.post = this.fmap[f].head.post;
+
+    this.fmap[f].head.post.pre = node;
     this.fmap[f].head.post = node;
 }
 LFUCache.prototype.removeNode = function(node) {
-    let post = node.post;
-    let pre = node.pre;
-    pre.post = post;
-    post.pre = pre;
+    node.pre.post = node.post;
+    node.post.pre = node.pre;
     if (this.fmap[this.minFreq].head.post === this.fmap[this.minFreq].tail) this.minFreq++;
 }
 

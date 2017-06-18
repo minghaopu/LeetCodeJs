@@ -53,9 +53,8 @@ var inorderTraversal = function(root) {
             ++top;
             cur = cur.left;
         } else {
-            let node = st[top];
+            let node = st.pop();
             res.push(node.val);
-            st.pop();
             --top;
             cur = node.right;
         }

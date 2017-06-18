@@ -26,4 +26,4 @@ var maximalRectangle = function(matrix) {
         }
     }
     return res;
-    
+}

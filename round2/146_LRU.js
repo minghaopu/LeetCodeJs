@@ -9,17 +9,17 @@ class DLinkedNode {
         this.post = null;
     }
 }
+
 function addNode(node, head) {
     node.pre = head;
     node.post = head.post;
     head.post.pre = node;
     head.post = node;
 }
+
 function removeNode(node) {
-    let pre = node.pre;
-    let post = node.post;
-    pre.post = post;
-    post.pre = pre;
+    node.pre.post = node.post;
+    node.post.pre = node.pre;
 }
 var LRUCache = function(capacity) {
     this.map = new Map();
@@ -30,6 +30,7 @@ var LRUCache = function(capacity) {
     this.capacity = capacity;
     this.count = 0;
 };
+
 function moveToHead(node, head) {
     removeNode(node);
     addNode(node, head);
